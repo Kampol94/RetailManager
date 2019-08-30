@@ -1,2 +1,2 @@
-# RetailManager
-Pełen projekt 
+# Retail Manager
+Full project
