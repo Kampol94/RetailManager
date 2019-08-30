@@ -1,0 +1,2 @@
+# RetailManager
+Pełen projekt 
