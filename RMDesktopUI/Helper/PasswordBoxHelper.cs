@@ -34,7 +34,9 @@ namespace RMDesktopUI.Helper
         public static void SetBoundPassword(DependencyObject d, string value)
         {
             if (string.Equals(value, GetBoundPassword(d)))
+            {
                 return; // and this is how we prevent infinite recursion
+            }
 
             d.SetValue(BoundPasswordProperty, value);
         }
@@ -46,7 +48,9 @@ namespace RMDesktopUI.Helper
             var box = d as PasswordBox;
 
             if (box == null)
+            {
                 return;
+            }
 
             box.Password = GetBoundPassword(d);
         }
