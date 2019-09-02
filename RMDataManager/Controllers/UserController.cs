@@ -17,15 +17,14 @@ namespace RMDataManager.Controllers
         
 
         // GET: User
-        public List<UserModel> GetById()
+        [HttpGet]
+        public UserModel GetById()
         {
             string userID = RequestContext.Principal.Identity.GetUserId();
 
             UserData data = new UserData();
 
-            data.GetUserById(userID);
-
-            return data.GetUserById(userID);
+            return data.GetUserById(userID).First();
         }
 
        

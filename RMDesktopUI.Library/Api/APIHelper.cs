@@ -8,15 +8,18 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RMDesktopUI.Helper
+namespace RMDesktopUI.Library.Api
 {
     public class APIHelper : IAPIHelper
     {
         private HttpClient apiClient;
 
-        public APIHelper()
+        private ILoggInUserModel _loggInUserModel;
+
+        public APIHelper(ILoggInUserModel loggedInUser)
         {
             InitializeClient();
+            _loggInUserModel = loggedInUser;
         }
 
         private void InitializeClient()
@@ -49,6 +52,34 @@ namespace RMDesktopUI.Helper
                 {
                     throw new Exception(response.ReasonPhrase);
                 }
+            }
+        }
+        public async Task GetLoggedInUserInfo(string token)
+        {
+            apiClient.DefaultRequestHeaders.Clear();
+            apiClient.DefaultRequestHeaders.Accept.Clear();
+            apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+            using (HttpResponseMessage response = await apiClient.GetAsync("/api/User"))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsAsync<LoggInUserModel>();
+                    _loggInUserModel.CreatedDate = result.CreatedDate;
+                    _loggInUserModel.EmailAddress = result.EmailAddress;
+                    _loggInUserModel.FirstName = result.FirstName;
+                    _loggInUserModel.Id = result.Id;
+                    _loggInUserModel.LastName = result.LastName;
+                    _loggInUserModel.Token = token;
+
+                }
+                else
+                {
+                    throw new Exception(response.ReasonPhrase);
+                }
+
+
             }
         }
     }
