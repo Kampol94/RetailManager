@@ -134,7 +134,7 @@ namespace RMDesktopUI.ViewModels
 
             taxAmount = Cart
                         .Where(x => x.Product.IsTaxable)
-                        .Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate);
+                        .Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate/100);
 
             //foreach (var item in Cart)
             //{
