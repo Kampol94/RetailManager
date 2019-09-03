@@ -53,6 +53,7 @@ namespace RMDesktopUI.ViewModels
             }
         }
 
+
         private ProductModel _selectedProduct;
 
         public ProductModel SelectedProduct
@@ -81,6 +82,7 @@ namespace RMDesktopUI.ViewModels
 
             }
         }
+
 
         private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
 
