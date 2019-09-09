@@ -1,4 +1,4 @@
-﻿using RMDataManager.Library.Internal.Models;
+﻿using RMDataManager.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,16 @@ namespace RMDataManager.Library.DataAccess
 
             
             var output = sql.LoadData<ProductModel, dynamic>("dbo.sqlProduct_GetAll", new { }, "RMData");
+
+            return output;
+        }
+
+        public  ProductModel GetProductById(int productId)
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+
+            var output = sql.LoadData<ProductModel, dynamic>("dbo.sqlProduct_GetById", new { Id = productId }, "RMData").FirstOrDefault();
 
             return output;
         }

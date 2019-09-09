@@ -17,13 +17,15 @@ namespace RMDesktopUI.ViewModels
     {
         IProductEndpoint _productEndpoint;
         IConfigHelper _configHelper;
+        ISaleEndPoint _saleEndpoint;
 
 
 
-        public  SaleViewModel(IProductEndpoint productEndPoint, IConfigHelper configHelper)
+        public  SaleViewModel(IProductEndpoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndpoint)
         {
             _productEndpoint = productEndPoint;
             _configHelper = configHelper;
+            _saleEndpoint = saleEndpoint;
 
         }
 
@@ -206,6 +208,7 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
 
         }
 
@@ -229,6 +232,7 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
 
@@ -238,15 +242,31 @@ namespace RMDesktopUI.ViewModels
             {
                 bool output = false;
 
-
+                if (Cart.Count > 0)
+                {
+                    output = true;
+                }
                 return output;
             }
 
         }
 
-        public void CheckOut()
+        public async Task CheckOut()
         {
+            SaleModel sale = new SaleModel();
 
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetilModel
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.QuantityInCart
+                });
+            }
+
+           await _saleEndpoint.PostSale(sale);
         }
+            
+        
     }
 }

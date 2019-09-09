@@ -1,33 +1,28 @@
 ﻿using Microsoft.AspNet.Identity;
-using RMDataManager.Library.Internal.DataAccess;
+using RMDataManager.Library.DataAccess;
 using RMDataManager.Library.Models;
+using RMDataManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
-
 
 namespace RMDataManager.Controllers
 {
     [Authorize]
-    
-    public class UserController : ApiController
+    public class SaleController : ApiController
     {
-        
 
-        // GET: User
-        [HttpGet]
-        public UserModel GetById()
+        public void Post(SaleModel sale)
         {
+            SaleData data = new SaleData();
             string userID = RequestContext.Principal.Identity.GetUserId();
 
-            UserData data = new UserData();
-
-            return data.GetUserById(userID).First();
+            data.SaveSale(sale, userID);
         }
 
-       
+        
     }
 }
-
