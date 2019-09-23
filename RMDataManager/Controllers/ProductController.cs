@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace RMDataManager.Controllers
 {
-    [Authorize(Roles = "Cashier,Admin")]
+    [Authorize(Roles = "Cashier")]
     public class ProductController : ApiController
     {
         [HttpGet]
