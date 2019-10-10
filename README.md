@@ -10,4 +10,4 @@ Project goals
 -	Using SQL database
 -	Create WebAPI with authentication
 -	Create WPF with will log into API
--	Create platform in .net framework to upgrade to .net core
+-	TODO Create platform in .net framework to upgrade to .net core
