@@ -13,10 +13,10 @@ using System.Web.Http;
 namespace RMDataManager.Controllers
 {
     [Authorize]
-    
+
     public class UserController : ApiController
     {
-        
+
 
         // GET: User
         [HttpGet]
@@ -36,7 +36,7 @@ namespace RMDataManager.Controllers
         {
             List<ApplicationUserModel> output = new List<ApplicationUserModel>();
 
-            using (var context  = new ApplicationDbContext())
+            using (var context = new ApplicationDbContext())
             {
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
@@ -65,7 +65,49 @@ namespace RMDataManager.Controllers
             return output;
         }
 
-       
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("api/User/Admin/GetAllRoles")]
+        public Dictionary<string, string> GetAllRoles()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var roles = context.Roles.ToDictionary(x => x.Id, x => x.Name);
+
+                return roles;
+
+            }
+
+
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [Route("api/User/Admin/AddRole")]
+        public void AddRole(UserRolePairModel pairModel)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                userManager.AddToRole(pairModel.UserId, pairModel.RoleName);
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        [Route("api/User/Admin/RemoveRole")]
+        public void RemoveRole(UserRolePairModel pairModel)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var userStore = new UserStore<ApplicationUser>(context);
+                var userManager = new UserManager<ApplicationUser>(userStore);
+
+                userManager.RemoveFromRole(pairModel.UserId, pairModel.RoleName);
+            }
+        }
     }
 }
 
