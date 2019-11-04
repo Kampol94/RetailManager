@@ -11,6 +11,7 @@ Project goals
 -	Create WebAPI with authentication
 -	Create WPF with will log into API
 -	TODO Create platform in .net framework to upgrade to .net core
+      - Upgrading to .NET Core: Front-End Class Library DONE
 ![Login Form](Pictures/LoginForm.PNG)
 ![Sale Page](Pictures/SalePage.PNG)
 ![Admin](Pictures/UserAdministrtion.PNG)
