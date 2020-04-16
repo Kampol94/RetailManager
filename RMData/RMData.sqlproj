@@ -61,10 +61,11 @@
     <Folder Include="dbo\Tables" />
     <Folder Include="dbo\Views" />
     <Folder Include="dbo\Stored Procedures" />
-    <Folder Include="PublishLocatins" />
+    <Folder Include="PublishLocations\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocatins\RMData.publish.xml" />
+    <None Include="PublishLocations\RMData.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
