@@ -29,7 +29,6 @@ namespace RMApi.Controllers
         {
             if (await IsValidUsernameAndPassword(username, password))
             {
-                var test = User;
                 return new ObjectResult(await GenerateToken(username));
             }
             else

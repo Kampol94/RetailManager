@@ -22,23 +22,20 @@ namespace RMApi.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IConfiguration _configuration;
+        private readonly IUserData _userData;
 
-        public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public UserController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IUserData userData)
         {
             _context = context;
             _userManager = userManager;
-            _configuration = configuration;
+            _userData = userData;
         }
 
         [HttpGet]
         public UserModel GetById()
         {
             string userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            UserData data = new UserData(_configuration);
-
-            return data.GetUserById(userID).First();
+            return _userData.GetUserById(userID).First();
         }
 
         [Authorize(Roles = "Admin")]
@@ -62,11 +59,6 @@ namespace RMApi.Controllers
 
                 };
                 u.Roles = userRoles.Where(x => x.UserId == u.Id).ToDictionary(key => key.RoleId, val => val.Name);
-                //foreach (var r in user.Roles)
-                //{
-                //    u.Roles.Add(r.RoleId, roles.Where(x => x.Id == r.RoleId).First().Name);
-                //}
-
                 output.Add(u);
             }
             

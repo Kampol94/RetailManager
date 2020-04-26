@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RMDataManager.Library.Models
 {
-    public class SAleDBModel
+    public class SaleDBModel
     {
         public int Id { get; set; }
 
