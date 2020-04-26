@@ -55,15 +55,15 @@ namespace RMDesktopUI.ViewModels
                 if (ex.Message == "Unauthorized")
                 {
                     _status.UpdateMessage("Unauthorize Access", "You don't have permision");
-                    _window.ShowDialog(_status, null, setting);
+                    await _window.ShowDialogAsync(_status, null, setting);
                 }
                 else
                 {
                     _status.UpdateMessage("Fatal", ex.Message);
-                    _window.ShowDialog(_status, null, setting);
+                    await _window.ShowDialogAsync(_status, null, setting);
                 }
                 
-                TryClose();
+                TryCloseAsync();
 
             }
         }
