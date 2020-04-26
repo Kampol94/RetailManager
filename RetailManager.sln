@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RMData", "RMData\RMData.sqlproj", "{EF165FB3-7F98-4AE5-8756-8011A265F8F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMDesktopUI", "RMDesktopUI\RMDesktopUI.csproj", "{6AEDFE13-15D9-4D24-A969-478943A771E5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMDesktopUI", "RMDesktopUI\RMDesktopUI.csproj", "{6AEDFE13-15D9-4D24-A969-478943A771E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMDataManager.Library", "RMDataManager.Library\RMDataManager.Library.csproj", "{511F1D1F-C741-4ACE-9287-82595D166BB3}"
 EndProject
@@ -17,7 +17,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{344962E2-701
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WPF", "WPF", "{DCDF50FD-6C81-4FE7-8E03-EF883E258338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMApi", "RMApi\RMApi.csproj", "{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RMApi", "RMApi\RMApi.csproj", "{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB7E4EEB-5A83-4723-B138-792BD8A90B29}"
+	ProjectSection(SolutionItems) = preProject
+		Roadmap.txt = Roadmap.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
