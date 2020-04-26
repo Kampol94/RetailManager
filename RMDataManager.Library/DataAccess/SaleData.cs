@@ -1,4 +1,5 @@
-﻿using RMDataManager.Library.Models;
+﻿using Microsoft.Extensions.Configuration;
+using RMDataManager.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,16 @@ namespace RMDataManager.Library.DataAccess
 {
     public class SaleData
     {
+        private readonly IConfiguration configuration;
 
+        public SaleData(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData products = new ProductData();
+            ProductData products = new ProductData(configuration);
             var taxRate = ConfigHelper.GetTaxtRate()/100;
 
             foreach (var item in saleInfo.SaleDetails)
@@ -52,7 +58,7 @@ namespace RMDataManager.Library.DataAccess
 
 
 
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess(configuration))
             {
                 try
                 {
@@ -83,7 +89,7 @@ namespace RMDataManager.Library.DataAccess
 
         public List<SaleReportModel> GetSaleReport()
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(configuration);
 
             var output = sql.LoadData<SaleReportModel, dynamic>("dbo.sqlSale_SaleReport", new { }, "RMData");
 
