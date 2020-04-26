@@ -15,15 +15,17 @@ namespace RMDesktopUI.ViewModels
     {
         private LoginViewModel _loginVM;
         private IEventAggregator _events;
-        private SaleViewModel _salesVM;
         private SimpleContainer _container;
         private ILoggInUserModel _user;
         private IAPIHelper _apiHelper;
 
-        public ShellViewModel(LoginViewModel loginVM, IEventAggregator events, SaleViewModel salesVM, SimpleContainer container, ILoggInUserModel user, IAPIHelper apiHelper)
+        public ShellViewModel(LoginViewModel loginVM,
+                              IEventAggregator events,
+                              SimpleContainer container,
+                              ILoggInUserModel user,
+                              IAPIHelper apiHelper)
         {
-            _events = events;
-            _salesVM = salesVM;
+            _events = events;;
             _loginVM = loginVM;
             _container = container;
             _user = user;
@@ -66,16 +68,9 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => IsLoggIn);
         }
 
-        //public void Handle(LogOnEvent message)
-        //{
-        //    ActivateItem(_salesVM);
-        //    NotifyOfPropertyChange(() => IsLoggIn);
-            
-        //}
-
         public async Task HandleAsync(LogOnEvent message, CancellationToken cancellationToken)
         {
-            await ActivateItemAsync(_salesVM, cancellationToken);
+            await ActivateItemAsync(IoC.Get<SaleViewModel>(), cancellationToken);
             NotifyOfPropertyChange(() => IsLoggIn);
         }
     }
