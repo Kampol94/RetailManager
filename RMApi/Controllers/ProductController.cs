@@ -22,6 +22,7 @@ namespace RMApi.Controllers
         {
             this.configuration = configuration;
         }
+
         [HttpGet]
         public List<ProductModel> Get()
         {
