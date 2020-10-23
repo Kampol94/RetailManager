@@ -53,8 +53,7 @@ namespace RMDesktopUI.Library.Api
             {
                 if(response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
-                    return result;
+                    return await response.Content.ReadAsAsync<AuthenticatedUser>();
                 }
                 else
                 {
@@ -86,14 +85,11 @@ namespace RMDesktopUI.Library.Api
                     _loggInUserModel.Id = result.Id;
                     _loggInUserModel.LastName = result.LastName;
                     _loggInUserModel.Token = token;
-
                 }
                 else
                 {
                     throw new Exception(response.ReasonPhrase);
                 }
-
-
             }
         }
     }
