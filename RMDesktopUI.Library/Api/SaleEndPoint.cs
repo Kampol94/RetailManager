@@ -21,7 +21,7 @@ namespace RMDesktopUI.Library.Api
         {
             using (HttpResponseMessage response = await _apiHelper.ApiClient.PostAsJsonAsync("/api/Sale", sale))
             {
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     //ToDo: Log successful 
                 }
@@ -30,7 +30,6 @@ namespace RMDesktopUI.Library.Api
                     throw new Exception(response.ReasonPhrase);
                 }
             }
-
         }
     }
 }

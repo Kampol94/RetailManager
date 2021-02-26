@@ -58,6 +58,8 @@ namespace RMDesktopUI.ViewModels
             set {
                 _selectedUserRole = value;
                 NotifyOfPropertyChange(() => SelectedUserRole);
+                //NotifyOfPropertyChange(() => CanRemoveSelectedRole);
+
             }
         }
 
@@ -70,6 +72,7 @@ namespace RMDesktopUI.ViewModels
             {
                 _selectedAvailableRole = value;
                 NotifyOfPropertyChange(() => SelectedAvailableRole);
+                //NotifyOfPropertyChange(() => CanAddSelectedRole);
             }
         }
 
@@ -109,8 +112,6 @@ namespace RMDesktopUI.ViewModels
                 NotifyOfPropertyChange(() => AvailableRoles);
             }
         }
-
-
 
         public UserDisplayViewModel(StatusInfoViewModel status, IWindowManager window, IUserEndPoint userEndPoint)
         {
@@ -158,6 +159,8 @@ namespace RMDesktopUI.ViewModels
         {
             var roles = await _userEndPoint.GetAllRoles();
 
+            AvailableRoles.Clear();
+
             foreach (var role in roles)
             {
                 if (UserRoles.IndexOf(role.Value) < 0)
@@ -170,20 +173,46 @@ namespace RMDesktopUI.ViewModels
         public async void RemoveSelectedRole()
         {
             await _userEndPoint.RemoveFromRole(SelectedUser.Id, SelectedUserRole);
-            UserRoles.Remove(SelectedUserRole);
-
             AvailableRoles.Add(SelectedUserRole);
+            UserRoles.Remove(SelectedUserRole);
+        }
 
+        public bool CanRemoveSelectedRole
+        {
+            get
+            {
+                return true;
+                if (SelectedUser is null || SelectedUserRole is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
         public async void AddSelectedRole()
         {
             await _userEndPoint.AddUserToRole(SelectedUser.Id, SelectedAvailableRole);
             UserRoles.Add(SelectedAvailableRole);
-
             AvailableRoles.Remove(SelectedAvailableRole);
         }
 
-
-
+        public bool CanAddSelectedRole
+        {
+            get
+            {
+                return true;
+                if (SelectedUser is null || SelectedAvailableRole is null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
     }
 }
