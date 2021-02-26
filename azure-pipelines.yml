@@ -1,0 +1,85 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: 'RMApi/RMApi.csproj'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  name: APIBuild
+
+- task: PublishBuildArtifacts@1
+  name: 'ApiArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'API'
+    publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteApiFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
+
+- task: VSBuild@1
+  name: 'BuildSQL'
+  inputs:
+    solution: 'RMData/RMData.sqlproj'
+    msbuildArgs: '/p:OutDir="$(build.artifactStagingDirectory)" /property:DSP="Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  name: 'SqlArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'SqlDrop'
+    publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteSqlFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
+
+- task: VSBuild@1
+  inputs:
+    solution: 'RMDesktopUI/RMDesktopUI.csproj'
+    msbuildArgs: '/p:OutDir="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  name: WPFBuild
+
+- task: PublishBuildArtifacts@1
+  name: 'WPFArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'WPF'
+    publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteWPFFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
