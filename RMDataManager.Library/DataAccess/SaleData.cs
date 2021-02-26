@@ -2,6 +2,7 @@
 using RMDataManager.Library.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,16 +13,32 @@ namespace RMDataManager.Library.DataAccess
     {
         private readonly IProductData _productData;
         private readonly ISqlDataAccess _sqlDataAccess;
+        private readonly IConfiguration _configuration;
 
-        public SaleData(IProductData productData, ISqlDataAccess sqlDataAccess)
+        public SaleData(IProductData productData, ISqlDataAccess sqlDataAccess, IConfiguration configuration)
         {
             _productData = productData;
             _sqlDataAccess = sqlDataAccess;
+            _configuration = configuration;
         }
+
+        public decimal GetTaxRate()
+        {
+            string rateText = _configuration.GetValue<string>("TaxRate");
+            bool IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
+
+            if (!IsValidTaxRate)
+            {
+                throw new ConfigurationErrorsException();
+            }
+
+            return output;
+        }
+
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            var taxRate = ConfigHelper.GetTaxtRate() / 100;
+            var taxRate = GetTaxRate();
 
             foreach (var item in saleInfo.SaleDetails)
             {

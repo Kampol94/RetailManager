@@ -23,7 +23,7 @@ namespace RMDesktopUI.Library.Api
             {
                 if(response.IsSuccessStatusCode)
                 {
-                    //Log successful 
+                    //ToDo: Log successful 
                 }
                 else
                 {
@@ -32,7 +32,5 @@ namespace RMDesktopUI.Library.Api
             }
 
         }
-
-        
     }
 }
