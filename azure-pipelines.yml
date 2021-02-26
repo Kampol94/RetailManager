@@ -28,13 +28,23 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: VSBuild@1
   inputs:
+    solution: 'API/RMAoi.csproj'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-    
+  name: APIBuild
+
 - task: PublishBuildArtifacts@1
+  name: 'ApiArtifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteApiFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
