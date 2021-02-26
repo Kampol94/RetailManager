@@ -62,3 +62,24 @@ steps:
   inputs:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**'
+
+- task: VSBuild@1
+  inputs:
+    solution: 'RMDesktopUI/RMDesktopUI.csproj'
+    msbuildArgs: '/p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  name: WPFBuild
+
+- task: PublishBuildArtifacts@1
+  name: 'WPFArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'WPF'
+    publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteWPFFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
