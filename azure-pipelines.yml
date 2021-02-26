@@ -46,7 +46,7 @@ steps:
   name: 'BuildSQL'
   inputs:
     solution: 'RMData/RMData.sqlproj'
-    msbuildArgs: '/p:PackageLocation="$(build.artifactStagingDirectory)" /property:DSP="Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider"'
+    msbuildArgs: '/p:OutDir="$(build.artifactStagingDirectory)" /property:DSP="Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -66,7 +66,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: 'RMDesktopUI/RMDesktopUI.csproj'
-    msbuildArgs: '/p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:OutDir="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   name: WPFBuild
