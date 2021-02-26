@@ -33,11 +33,32 @@ steps:
   name: 'ApiArtifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+    ArtifactName: 'API'
     publishLocation: 'Container'
 
 - task: DeleteFiles@1
   name: 'DeleteApiFiles'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**'
+
+- task: VSBuild@1
+  name: 'BuildSQL'
+  inputs:
+    solution: 'RMData/RMData.sqlproj'
+    msbuildArgs: '/p:PackageLocation="$(build.artifactStagingDirectory)" /property:DSP="Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: PublishBuildArtifacts@1
+  name: 'SqlArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'API'
+    publishLocation: 'Container'
+
+- task: DeleteFiles@1
+  name: 'DeleteSqlFiles'
   inputs:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**'
