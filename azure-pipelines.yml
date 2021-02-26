@@ -21,13 +21,11 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   inputs:
-    solution: 'RMApi/RMApi.csproj'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  name: APIBuild
+    command: 'publish'
+    publishWebProjects: true
+    arguments: '-r linux-x64 --output $(build.artifactStagingDirectory)'
 
 - task: PublishBuildArtifacts@1
   name: 'ApiArtifact'
