@@ -54,7 +54,7 @@ steps:
   name: 'SqlArtifact'
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'API'
+    ArtifactName: 'SqlDrop'
     publishLocation: 'Container'
 
 - task: DeleteFiles@1
