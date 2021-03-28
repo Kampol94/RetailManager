@@ -81,3 +81,16 @@ steps:
   inputs:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      dotnet tool install --global dotnet -ef
+      dotnet ef migrations script -i -o $(Build.ArtifactStagingDirectory)\migrate.sql -p RMApi\RMApi.csproj
+
+- task: PublishBuildArtifacts@1
+  name: 'AuthDbArtifact'
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'AuthDb'
+    publishLocation: 'Container'
