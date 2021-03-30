@@ -13,5 +13,5 @@ namespace RMDesktopUI.Library
 
         void ResetUserModel();
     }
-        
+
 }

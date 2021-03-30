@@ -2,11 +2,9 @@
 using RMDesktopUI.Library.Api;
 using RMDesktopUI.Library.Models;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
@@ -55,7 +53,8 @@ namespace RMDesktopUI.ViewModels
         public string SelectedUserRole
         {
             get { return _selectedUserRole; }
-            set {
+            set
+            {
                 _selectedUserRole = value;
                 NotifyOfPropertyChange(() => SelectedUserRole);
                 //NotifyOfPropertyChange(() => CanRemoveSelectedRole);
