@@ -1,23 +1,22 @@
 ﻿using AutoMapper;
 using Caliburn.Micro;
+using Microsoft.Extensions.Configuration;
 using RMDesktopUI.Helper;
 using RMDesktopUI.Library;
 using RMDesktopUI.Library.Api;
-using RMDesktopUI.Library.Helpers;
 using RMDesktopUI.Library.Models;
 using RMDesktopUI.Models;
 using RMDesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace RMDesktopUI
 {
-     public class Bootstrapper : BootstrapperBase
+    public class Bootstrapper : BootstrapperBase
     {
         private SimpleContainer _container = new SimpleContainer();
 
@@ -31,7 +30,7 @@ namespace RMDesktopUI
             "PasswordChanged");
         }
 
-        private IMapper  ConfigureAutomapper()
+        private IMapper ConfigureAutomapper()
         {
             var config = new MapperConfiguration(cfg =>
             {
@@ -44,9 +43,23 @@ namespace RMDesktopUI
             return output;
         }
 
+        private IConfiguration AddConfiguration()
+        {
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json");
+
+#if DEBUG
+            configurationBuilder.AddJsonFile("appsetting.Development.json", optional: true, reloadOnChange: true);
+#else
+            configurationBuilder.AddJsonFile("appsetting.Development.json", optional: true, reloadOnChange: true);
+#endif
+            return configurationBuilder.Build();
+        }
+
         protected override void Configure()
         {
-            
+
 
             _container.Instance(ConfigureAutomapper());
 
@@ -54,14 +67,15 @@ namespace RMDesktopUI
                 .PerRequest<IProductEndpoint, ProductEndpoint>()
                 .PerRequest<ISaleEndPoint, SaleEndPoint>()
                 .PerRequest<IUserEndPoint, UserEndPoint>();
-            
+
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggInUserModel, LoggInUserModel>()
-                .Singleton<IConfigHelper, ConfigHelper>()
                 .Singleton<IAPIHelper, APIHelper>();
+
+            _container.RegisterInstance(typeof(IConfiguration), "IConfiguration", AddConfiguration());
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
@@ -69,7 +83,8 @@ namespace RMDesktopUI
                 .ToList()
                 .ForEach(viewModelType => _container.RegisterPerRequest(
                     viewModelType, viewModelType.ToString(), viewModelType));
-            
+
+
 
         }
 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using RMDesktopUI.EventsModel;
 using RMDesktopUI.Library;
 using RMDesktopUI.Library.Api;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace RMDesktopUI.ViewModels
 {
@@ -25,7 +21,7 @@ namespace RMDesktopUI.ViewModels
                               ILoggInUserModel user,
                               IAPIHelper apiHelper)
         {
-            _events = events;;
+            _events = events; ;
             _loginVM = loginVM;
             _container = container;
             _user = user;
@@ -41,7 +37,7 @@ namespace RMDesktopUI.ViewModels
             {
                 bool output = false;
 
-                if (string.IsNullOrWhiteSpace(_user.Token)== false)
+                if (string.IsNullOrWhiteSpace(_user.Token) == false)
                 {
                     output = true;
                 }

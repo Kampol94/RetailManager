@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using RMDesktopUI.Library.Models;
+﻿using RMDesktopUI.Library.Models;
+using System.Threading.Tasks;
 
 namespace RMDesktopUI.Library.Api
 {

@@ -2,9 +2,6 @@
 using RMDesktopUI.EventsModel;
 using RMDesktopUI.Library.Api;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,11 +39,11 @@ namespace RMDesktopUI.ViewModels
             {
                 _password = value;
                 NotifyOfPropertyChange(() => Password);
-               NotifyOfPropertyChange(() => CanLogIn);
+                NotifyOfPropertyChange(() => CanLogIn);
             }
         }
 
-        
+
 
         public bool IsErrorVisible
         {
@@ -60,8 +57,8 @@ namespace RMDesktopUI.ViewModels
                 }
                 return output;
             }
-            
-            
+
+
         }
 
         private string _errorMessege;
@@ -74,7 +71,7 @@ namespace RMDesktopUI.ViewModels
                 _errorMessege = value;
                 NotifyOfPropertyChange(() => IsErrorVisible);
                 NotifyOfPropertyChange(() => ErrorMessege);
-                
+
             }
         }
 
@@ -102,8 +99,8 @@ namespace RMDesktopUI.ViewModels
 
                 await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
 
-                await _events.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken()); 
-                
+                await _events.PublishOnUIThreadAsync(new LogOnEvent(), new CancellationToken());
+
             }
             catch (Exception ex)
             {
