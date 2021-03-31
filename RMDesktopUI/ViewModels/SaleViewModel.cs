@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Caliburn.Micro;
+using Microsoft.Extensions.Configuration;
 using RMDesktopUI.Library.Api;
-using RMDesktopUI.Library.Helpers;
 using RMDesktopUI.Library.Models;
 using RMDesktopUI.Models;
 using System;
@@ -9,33 +9,36 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Dynamic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace RMDesktopUI.ViewModels
 {
-    
-    
+
+
     public class SaleViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
-        IConfigHelper _configHelper;
         ISaleEndPoint _saleEndpoint;
         IMapper _mapper;
         private readonly StatusInfoViewModel _status;
         private readonly IWindowManager _window;
+        private readonly IConfiguration _configuration;
 
-        public  SaleViewModel(IProductEndpoint productEndPoint, IConfigHelper configHelper, ISaleEndPoint saleEndpoint, IMapper mapper, StatusInfoViewModel status, IWindowManager window)
+        public SaleViewModel(
+            IProductEndpoint productEndPoint,
+            ISaleEndPoint saleEndpoint,
+            IMapper mapper,
+            StatusInfoViewModel status,
+            IWindowManager window,
+            IConfiguration configuration)
         {
             _productEndpoint = productEndPoint;
-            _configHelper = configHelper;
             _saleEndpoint = saleEndpoint;
             _mapper = mapper;
             _status = status;
             _window = window;
-            
-
+            _configuration = configuration;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -62,7 +65,7 @@ namespace RMDesktopUI.ViewModels
                     _status.UpdateMessage("Fatal", ex.Message);
                     await _window.ShowDialogAsync(_status, null, setting);
                 }
-                
+
                 TryCloseAsync();
 
             }
@@ -85,7 +88,7 @@ namespace RMDesktopUI.ViewModels
             {
                 _products = value;
                 NotifyOfPropertyChange(() => Products);
-                
+
             }
         }
 
@@ -160,17 +163,17 @@ namespace RMDesktopUI.ViewModels
             }
         }
 
-       
+
 
         public string SubTotal
         {
             get
             {
-                
-                
+
+
                 return CalculatedSubTotal().ToString("c");
             }
-            
+
         }
         private decimal CalculatedSubTotal()
         {
@@ -186,7 +189,7 @@ namespace RMDesktopUI.ViewModels
         {
             get
             {
-                
+
                 return CalculatedTax().ToString("c");
             }
 
@@ -194,11 +197,11 @@ namespace RMDesktopUI.ViewModels
         private decimal CalculatedTax()
         {
             decimal taxAmount = 0;
-            decimal taxRate = _configHelper.GetTaxtRate();
+            decimal taxRate = _configuration.GetValue<decimal>("taxRate");
 
             taxAmount = Cart
                         .Where(x => x.Product.IsTaxable)
-                        .Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate/100);
+                        .Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate / 100);
 
             //foreach (var item in Cart)
             //{
@@ -230,7 +233,7 @@ namespace RMDesktopUI.ViewModels
             {
                 bool output = false;
 
-                if(ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
+                if (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity)
                 {
                     output = true;
                 }
@@ -245,10 +248,10 @@ namespace RMDesktopUI.ViewModels
         {
             CartItemDisplayModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
 
-            if(existingItem != null)
+            if (existingItem != null)
             {
                 existingItem.QuantityInCart += ItemQuantity;
-              
+
             }
             else
             {
@@ -261,7 +264,7 @@ namespace RMDesktopUI.ViewModels
 
             }
 
-            
+
 
             SelectedProduct.QuantityInStock -= ItemQuantity;
             ItemQuantity = 1;
@@ -300,11 +303,11 @@ namespace RMDesktopUI.ViewModels
             if (SelectedCartItem.QuantityInCart > 1)
             {
                 SelectedCartItem.QuantityInCart -= 1;
-                
+
             }
             else
             {
-                
+
                 Cart.Remove(SelectedCartItem);
             }
 
@@ -344,15 +347,15 @@ namespace RMDesktopUI.ViewModels
                 });
             }
 
-            
-                await _saleEndpoint.PostSale(sale);
-            
-          
+
+            await _saleEndpoint.PostSale(sale);
+
+
 
             await ResetSaleViewModel();
-         
+
         }
-            
-        
+
+
     }
 }

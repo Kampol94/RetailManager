@@ -61,13 +61,20 @@ steps:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**'
 
-- task: VSBuild@1
+- task: FileTransform@1
   inputs:
-    solution: 'RMDesktopUI/RMDesktopUI.csproj'
-    msbuildArgs: '/p:OutDir="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  name: WPFBuild
+    folderPath: '$(System.DefaultWorkingDirectory)'
+    fileType: 'json'
+    targetFiles: '**/*.json'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'RMDesktopUI/RMDesktopUI.csproj'
+    arguments: '-p:PublishSingleFile=true  -c Release --runtime win-x64 --self-contained true --output $(build.artifactStagingDirectory)'
+    zipAfterPublish: false
+
 
 - task: PublishBuildArtifacts@1
   name: 'WPFArtifact'

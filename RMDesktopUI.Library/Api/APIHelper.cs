@@ -1,11 +1,9 @@
-﻿using RMDesktopUI.Library.Models;
+﻿using Microsoft.Extensions.Configuration;
+using RMDesktopUI.Library.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace RMDesktopUI.Library.Api
@@ -15,11 +13,13 @@ namespace RMDesktopUI.Library.Api
         private HttpClient _apiClient;
 
         private ILoggInUserModel _loggInUserModel;
+        private readonly IConfiguration _configuration;
 
-        public APIHelper(ILoggInUserModel loggedInUser)
+        public APIHelper(ILoggInUserModel loggedInUser, IConfiguration configuration)
         {
-            InitializeClient();
             _loggInUserModel = loggedInUser;
+            _configuration = configuration;
+            InitializeClient();
         }
 
         public HttpClient ApiClient
@@ -32,7 +32,7 @@ namespace RMDesktopUI.Library.Api
 
         private void InitializeClient()
         {
-            string API = ConfigurationManager.AppSettings["api"];
+            string API = _configuration.GetValue<string>("api");
 
             _apiClient = new HttpClient();
             _apiClient.BaseAddress = new Uri(API);
@@ -51,7 +51,7 @@ namespace RMDesktopUI.Library.Api
 
             using (HttpResponseMessage response = await _apiClient.PostAsync("/Token", data))
             {
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsAsync<AuthenticatedUser>();
                 }
