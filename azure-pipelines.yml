@@ -66,7 +66,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'RMDesktopUI/RMDesktopUI.csproj'
-    arguments: '-p:PublishSingleFile=true --runtime win-x64 --self-contained true --output $(build.artifactStagingDirectory)' -c Release
+    arguments: '-p:PublishSingleFile=true  -c Release --runtime win-x64 --self-contained true --output $(build.artifactStagingDirectory)'
     zipAfterPublish: false
 
 
