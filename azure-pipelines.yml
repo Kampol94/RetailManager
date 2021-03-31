@@ -61,6 +61,12 @@ steps:
     SourceFolder: '$(Build.ArtifactStagingDirectory)'
     Contents: '**'
 
+- task: FileTransform@1
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)'
+    fileType: 'json'
+    targetFiles: '**/*.json'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'publish'
