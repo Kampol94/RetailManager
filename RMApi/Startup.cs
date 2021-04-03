@@ -41,6 +41,15 @@ namespace RMApi
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddCors(policy =>
+            {
+                policy.AddPolicy("OpenCorsPolicy", opt =>
+                {
+                    opt.AllowAnyOrigin()
+                       .AllowAnyHeader()
+                       .AllowAnyMethod();
+                });
+            });
 
             //Personal services
 
@@ -98,6 +107,7 @@ namespace RMApi
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseCors("OpenCorsPolicy");
             app.UseStaticFiles();
 
             app.UseRouting();

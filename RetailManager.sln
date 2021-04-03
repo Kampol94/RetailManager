@@ -24,6 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Roadmap.txt = Roadmap.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApps", "WebApps", "{E3D8146E-1638-496F-B058-665EFE21DEB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RMPortalBlazorPWA", "RMPortalBlazorPWA\RMPortalBlazorPWA.csproj", "{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +56,10 @@ Global
 		{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +70,7 @@ Global
 		{511F1D1F-C741-4ACE-9287-82595D166BB3} = {344962E2-701E-416C-B97C-00C1AD66DFEF}
 		{F98E9359-BE1D-4735-952A-C5F931A1568E} = {DCDF50FD-6C81-4FE7-8E03-EF883E258338}
 		{51B5A0A7-14EC-44EC-A0AA-66C96BEE02AD} = {344962E2-701E-416C-B97C-00C1AD66DFEF}
+		{E1CE4463-37A9-462F-8B2F-48BCCC74C5EC} = {E3D8146E-1638-496F-B058-665EFE21DEB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7B8E6E78-DDC6-46B0-93DF-B80552798E63}
