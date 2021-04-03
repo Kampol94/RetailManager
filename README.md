@@ -17,6 +17,7 @@ Project goals
 ![Admin](Pictures/UserAdministrtion.PNG)
 
 TODO:
-      - User Blazor WebAssembly PWA
-      - Deckerize backend 
-      - Brak off a piece as microservices 
+-     User Blazor WebAssembly PWA
+-     Deckerize backend 
+-     Brak off a piece as microservices 
+-     Upgrade to .Net 5
