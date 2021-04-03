@@ -17,12 +17,14 @@ variables:
 steps:
 
 - task: DotNetCoreCLI@2
+  name: "RestoreNuget"
   inputs:
     command: 'restore'
     projects: '**\*.sln'
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
+  name: "PublishApi"
   inputs:
     command: 'publish'
     publishWebProjects: true
