@@ -20,12 +20,13 @@ namespace RMPortalBlazorPWA.Authentiction
         {
             _httpClient = httpClient;
             _localStorageService = localStorageService;
+            _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _localStorageService.GetItemAsync<string>("authToken");
 
-            if (string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(token) || token == "null")
             {
                 return _anonymous;
             }

@@ -1,9 +1,7 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
 using RMPortalBlazorPWA.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -38,6 +36,8 @@ namespace RMPortalBlazorPWA.Authentiction
 
             var authResult = await _httpClient.PostAsync("https://localhost:44305/token", data);
 
+            var token = await _localStorageService.GetItemAsync<string>("authToken");
+
             var authContent = await authResult.Content.ReadAsStringAsync();
 
             if (authResult.IsSuccessStatusCode == false)
@@ -45,13 +45,13 @@ namespace RMPortalBlazorPWA.Authentiction
                 return null;
             }
 
-            var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent);
+            var result = JsonSerializer.Deserialize<AuthenticatedUserModel>(authContent, new JsonSerializerOptions { PropertyNameCaseInsensitive = true});
 
-            await _localStorageService.SetItemAsync("authToken", result.AccessToken);
+            await _localStorageService.SetItemAsync("authToken", result.Access_Token);
 
-            ((AuthStateProvider)_authenticationStateProvider).NotifyUserAuthentication(result.AccessToken);
+            ((AuthStateProvider)_authenticationStateProvider).NotifyUserAuthentication(result.Access_Token);
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.AccessToken);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Access_Token);
 
             return result;
         }
