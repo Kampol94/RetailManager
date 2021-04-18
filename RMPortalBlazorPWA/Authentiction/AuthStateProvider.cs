@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,14 @@ namespace RMPortalBlazorPWA.Authentiction
     {
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
+        private readonly IConfiguration _configuration;
         private readonly AuthenticationState _anonymous;
 
-        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
+        public AuthStateProvider(HttpClient httpClient, ILocalStorageService localStorageService, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _localStorageService = localStorageService;
+            _configuration = configuration;
             _anonymous = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
@@ -33,7 +36,7 @@ namespace RMPortalBlazorPWA.Authentiction
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", token);
 
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), "jwtAuthToken")));
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(JwtParser.ParseClaimsFromJwt(token), _configuration["authTokenStorageKey"])));
         }
 
         public void NotifyUserAuthentication(string token)
