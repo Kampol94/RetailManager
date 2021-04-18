@@ -7,7 +7,17 @@
 
     <div class="main">
         <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
+            <AuthorizeView>
+                <Authorized>
+                    Welcome @context.User.FindFirst(ClaimTypes.Name).Value
+                    <NavLink class="nav-link" href="logout">
+                        <span class="oi oi-account-logout"></span> Log out
+                    </NavLink>
+                </Authorized>
+                <NotAuthorized>
+                    <LogIn />
+                </NotAuthorized>
+            </AuthorizeView>
         </div>
 
         <div class="content px-4">
