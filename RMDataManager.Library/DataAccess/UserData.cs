@@ -20,5 +20,10 @@ namespace RMDataManager.Library.Internal.DataAccess
         {
             return _sqlDataAccess.LoadData<UserModel, dynamic>("dbo.sqlUserLookup", new { Id }, "RMData");
         }
+
+        public void CreateUser(UserModel user)
+        {
+            _sqlDataAccess.SavedData("dbo.spUser_Insert", new { user.Id, user.FirstName, user.LastName, user.EmailAddress }, "RMData");
+        }
     }
 }

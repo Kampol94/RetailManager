@@ -101,5 +101,45 @@ namespace RMApi.Controllers
 
             await _userManager.RemoveFromRoleAsync(user, pairModel.RoleName);
         }
+
+        public record UserRegistationModel(string FirstName, string LastName, string EmailAddress, string Password);
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(UserRegistationModel userRegistationModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = await _userManager.FindByEmailAsync(userRegistationModel.EmailAddress);
+                if (existingUser is null)
+                {
+                    IdentityUser identityUser = new()
+                    {
+                        Email = userRegistationModel.EmailAddress,
+                        EmailConfirmed = true,
+                        UserName = userRegistationModel.EmailAddress
+                    };
+                    IdentityResult result = await _userManager.CreateAsync(identityUser, userRegistationModel.Password);
+
+                    if (result.Succeeded)
+                    {
+                        existingUser = await _userManager.FindByEmailAsync(userRegistationModel.EmailAddress);
+
+                        UserModel u = new()
+                        {
+                            Id = existingUser.Id,
+                            FirstName = userRegistationModel.FirstName,
+                            LastName = userRegistationModel.LastName,
+                            EmailAddress = userRegistationModel.EmailAddress
+                        };
+                        _userData.CreateUser(u);
+                        return Ok();
+                    }
+                }
+            }
+            return BadRequest();
+        }
+
     }
 }
